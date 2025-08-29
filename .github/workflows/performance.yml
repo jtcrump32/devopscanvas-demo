@@ -1,0 +1,38 @@
+name: Performance Tests
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '*/15 * * * *'  # Run every 15 minutes for demo
+  workflow_dispatch:
+
+jobs:
+  performance-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup test environment
+      run: |
+        echo "Setting up performance test environment..."
+        sleep 1
+    
+    - name: Run load tests
+      run: |
+        echo "Running load tests..."
+        # Simulate occasional failures for demo purposes
+        if [ $((RANDOM % 3)) -eq 0 ]; then
+          echo "Load test failed - threshold exceeded!"
+          exit 1
+        else
+          echo "Load tests passed!"
+        fi
+        sleep 2
+    
+    - name: Generate performance report
+      if: always()
+      run: |
+        echo "Generating performance report..."
+        echo "Performance metrics collected"
